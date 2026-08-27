@@ -1,5 +1,16 @@
 document.documentElement.classList.add('js');
 
+// Keep the navigation architecture consistent across the interior pages.
+const interior = document.body.classList.contains('interior-page');
+if (interior) {
+  const current = location.pathname.split('/').pop() || 'index.html';
+  const items = [['index.html','Home'],['services.html','Solutions'],['academy.html','Academy'],['talent.html','Talent'],['about.html','About']];
+  const desktop = document.querySelector('nav.links');
+  if (desktop) desktop.innerHTML = items.map(([href,label]) => `<a href="${href}" class="${current === href ? 'active' : ''}">${label}</a>`).join('');
+  const mobile = document.getElementById('mobilePanel');
+  if (mobile) mobile.innerHTML = items.map(([href,label]) => `<a href="${href}">${label}</a>`).join('') + '<a href="contact.html">Contact</a><a href="contact.html" class="btn btn-primary">Request assessment</a>';
+}
+
 // header shrink on scroll
 const header = document.getElementById('siteHeader');
 if (header) {
@@ -232,3 +243,23 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 // footer year
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// Small, pointer-based depth cue for the hero image. It is intentionally
+// disabled on touch devices and when reduced motion is requested.
+if (document.body.classList.contains('hub-home') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.matchMedia('(pointer: fine)').matches) {
+  document.body.classList.add('motion-enabled');
+  const heroArt = document.querySelector('.hub-hero-art');
+  heroArt?.addEventListener('pointermove', (event) => {
+    const box = heroArt.getBoundingClientRect();
+    const x = (event.clientX - box.left) / box.width - .5;
+    const y = (event.clientY - box.top) / box.height - .5;
+    heroArt.style.setProperty('--hero-rx', `${(x * 2).toFixed(2)}deg`);
+    heroArt.style.setProperty('--hero-ry', `${(-y * 2).toFixed(2)}deg`);
+    heroArt.style.setProperty('--hero-x', `${(x * 4).toFixed(1)}px`);
+    heroArt.style.setProperty('--hero-y', `${(y * 4).toFixed(1)}px`);
+  });
+  heroArt?.addEventListener('pointerleave', () => {
+    heroArt.style.setProperty('--hero-rx', '0deg'); heroArt.style.setProperty('--hero-ry', '0deg');
+    heroArt.style.setProperty('--hero-x', '0px'); heroArt.style.setProperty('--hero-y', '0px');
+  });
+}
