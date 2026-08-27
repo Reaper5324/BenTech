@@ -50,6 +50,35 @@ if (motionStage && !motionStage.querySelector('.motion-field')) {
   motionStage.appendChild(field);
 }
 
+// Load TikTok's official creator embed only when the home-page showcase is near view.
+const tiktokShowcase = document.querySelector('.hub-social');
+if (tiktokShowcase) {
+  const embed = tiktokShowcase.querySelector('.tiktok-embed');
+  const fallback = tiktokShowcase.querySelector('.hub-social-fallback');
+  const showTikTokFallback = () => {
+    tiktokShowcase.classList.add('embed-failed');
+    fallback?.removeAttribute('hidden');
+  };
+  const loadTikTokEmbed = () => {
+    if (window.tiktokEmbedRequested) return;
+    window.tiktokEmbedRequested = true;
+    const script = document.createElement('script');
+    script.src = 'https://www.tiktok.com/embed.js';
+    script.async = true;
+    script.onload = () => window.setTimeout(() => {
+      if (!embed?.querySelector('iframe')) showTikTokFallback();
+    }, 5000);
+    script.onerror = showTikTokFallback;
+    document.body.appendChild(script);
+  };
+  if (fallback) fallback.setAttribute('hidden', '');
+  new IntersectionObserver((entries, observer) => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    loadTikTokEmbed();
+    observer.disconnect();
+  }, { rootMargin: '300px' }).observe(tiktokShowcase);
+}
+
 // Bring the compact Academy footer up to the same useful contact standard.
 if (document.body.classList.contains('academy-page')) {
   const footerContainer = document.querySelector('footer .container');
