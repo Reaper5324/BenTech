@@ -1,5 +1,66 @@
 document.documentElement.classList.add('js');
 
+// Ensure the shared enhancement layer is loaded after the base stylesheet on
+// every page, including the compact one-line Academy/Talent documents.
+if (!document.querySelector('link[href="enhancements.css"]')) {
+  const enhancementLink = document.createElement('link');
+  enhancementLink.rel = 'stylesheet';
+  enhancementLink.href = 'enhancements.css';
+  document.head.appendChild(enhancementLink);
+}
+
+// Academy and Talent are intentionally compact documents, but they still need
+// the same mobile navigation contract as the full pages.
+if (!document.getElementById('mobilePanel') && document.body.classList.contains('hub-home')) {
+  const panel = document.createElement('nav');
+  panel.id = 'mobilePanel';
+  panel.className = 'mobile-panel';
+  panel.setAttribute('aria-label', 'Mobile navigation');
+  panel.innerHTML = '<a href="index.html">Home</a><a href="services.html">Solutions</a><a href="academy.html">Academy</a><a href="talent.html">Talent</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="contact.html" class="btn btn-primary">Request assessment</a>';
+  document.body.insertBefore(panel, document.body.firstElementChild?.nextSibling || null);
+}
+
+// Use the supplied master mark consistently in headers, footers and browser tabs.
+const suppliedLogo = 'Logo-Cfwf3AIi.svg';
+document.querySelectorAll('.brand').forEach((brand) => {
+  const image = brand.querySelector('.hub-logo');
+  if (image) image.src = suppliedLogo;
+  else {
+    brand.querySelector('.brand-mark')?.remove();
+    const mark = document.createElement('img');
+    mark.className = 'hub-logo'; mark.src = suppliedLogo; mark.alt = '';
+    brand.insertBefore(mark, brand.firstChild);
+  }
+  brand.classList.add('logo-replaced');
+});
+if (!document.querySelector('link[rel="icon"]')) {
+  const favicon = document.createElement('link');
+  favicon.rel = 'icon'; favicon.type = 'image/svg+xml'; favicon.href = suppliedLogo;
+  document.head.appendChild(favicon);
+}
+
+// Continuous, ambient network animation for the hero of every page.
+// It is decorative only and never captures pointer or keyboard input.
+const motionStage = document.querySelector('.hub-hero, .page-hero');
+if (motionStage && !motionStage.querySelector('.motion-field')) {
+  const field = document.createElement('div');
+  field.className = 'motion-field';
+  field.setAttribute('aria-hidden', 'true');
+  field.innerHTML = '<div class="field-grid"></div><div class="field-orbit orbit-a"></div><div class="field-orbit orbit-b"></div><div class="field-line line-a"></div><div class="field-line line-b"></div><div class="field-line line-c"></div><i class="field-node node-a"></i><i class="field-node node-b"></i><i class="field-node node-c"></i><i class="field-node node-d"></i><i class="field-node node-e"></i><span class="field-beam beam-a"></span><span class="field-beam beam-b"></span>';
+  motionStage.appendChild(field);
+}
+
+// Bring the compact Academy footer up to the same useful contact standard.
+if (document.body.classList.contains('academy-page')) {
+  const footerContainer = document.querySelector('footer .container');
+  if (footerContainer && !footerContainer.querySelector('.footer-detail-grid')) {
+    const details = document.createElement('div');
+    details.className = 'footer-detail-grid';
+    details.innerHTML = '<div><b>BenTechHub Academy</b><p>Practical networking, cybersecurity and cloud training with mentor support.</p></div><div><b>Contact</b><a href="mailto:info@bentechhub.co.za">info@bentechhub.co.za</a><a href="https://wa.me/27672033731">WhatsApp support</a></div><div><b>Explore</b><a href="services.html">Solutions</a><a href="talent.html">Talent network</a></div>';
+    footerContainer.insertBefore(details, footerContainer.firstElementChild);
+  }
+}
+
 // Keep the navigation architecture consistent across the interior pages.
 const interior = document.body.classList.contains('interior-page');
 if (interior) {
@@ -196,9 +257,30 @@ if (form) {
     status.removeAttribute('role');
 
     try {
-      // Send form data to Formspree endpoint
-      // Replace YOUR_FORM_ID with your actual Formspree form ID
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      // The repository intentionally does not contain a live Formspree form ID.
+      // Keep the contact flow useful in static hosting by handing the validated
+      // request to the visitor's email client instead of making a doomed API call.
+      const endpoint = '';
+      if (!endpoint) {
+        const values = Object.fromEntries(new FormData(form).entries());
+        const subject = encodeURIComponent(`BenTechHub assessment request — ${values.name || 'Website enquiry'}`);
+        const body = encodeURIComponent([
+          `Name: ${values.name || ''}`,
+          `Company: ${values.company || ''}`,
+          `Email: ${values.email || ''}`,
+          `Phone: ${values.phone || ''}`,
+          `Service: ${values.service || ''}`,
+          '', values.message || ''
+        ].join('\n'));
+        status.textContent = 'Opening your email app with the request ready to send.';
+        status.className = 'show ok';
+        status.setAttribute('role', 'status');
+        window.location.href = `mailto:info@bentechhub.co.za?subject=${subject}&body=${body}`;
+        submitBtn.disabled = false;
+        return;
+      }
+      // Send form data to a configured Formspree endpoint when one is supplied.
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
