@@ -67,11 +67,13 @@ if (tiktokShowcase) {
     script.async = true;
     script.onload = () => window.setTimeout(() => {
       if (!embed?.querySelector('iframe')) showTikTokFallback();
-    }, 5000);
+    }, 3000);
     script.onerror = showTikTokFallback;
     document.body.appendChild(script);
   };
   if (fallback) fallback.setAttribute('hidden', '');
+  const startWhenIdle = window.requestIdleCallback || ((callback) => window.setTimeout(callback, 1200));
+  startWhenIdle(loadTikTokEmbed, { timeout: 1800 });
   new IntersectionObserver((entries, observer) => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     loadTikTokEmbed();
