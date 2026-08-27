@@ -60,25 +60,6 @@ if (document.body.classList.contains('academy-page')) {
     footerContainer.insertBefore(details, footerContainer.firstElementChild);
   }
 
-  const academyContent = document.querySelector('main');
-  if (academyContent && !academyContent.querySelector('.ecosystem-detail')) {
-    const details = document.createElement('section');
-    details.className = 'ecosystem-detail';
-    details.innerHTML = '<div class="container"><div class="hub-section-heading"><div><p class="hub-kicker dark"><i></i>Learning in practice</p><h2>Build skills you can take into the real world.</h2></div><p>BenTechHub Academy focuses on hands-on IT training, mentor support and career development. Cisco certification courses are part of the learning pathway, with practical networking skills at the centre.</p></div><div class="proof-grid"><article><b>Learn</b><h3>Practical IT foundations</h3><p>Develop a grounded understanding of the technologies businesses use to stay connected, secure and productive.</p></article><article><b>Practise</b><h3>Skills built around application</h3><p>Use a practical, work-focused approach to strengthen networking knowledge and technical confidence.</p></article><article><b>Progress</b><h3>A clearer career direction</h3><p>Explore a structured path from learning into the wider BenTechHub technology talent ecosystem.</p></article></div><a class="hub-text-button" href="mailto:info@bentechhub.co.za?subject=Academy%20Application">Ask about the Academy <span>→</span></a></div>';
-    const footer = document.querySelector('footer');
-    if (footer) footer.before(details);
-  }
-}
-
-if (document.body.classList.contains('talent-page')) {
-  const talentContent = document.querySelector('main');
-  if (talentContent && !talentContent.querySelector('.ecosystem-detail')) {
-    const details = document.createElement('section');
-    details.className = 'ecosystem-detail';
-    details.innerHTML = '<div class="container"><div class="hub-section-heading"><div><p class="hub-kicker dark"><i></i>For organisations</p><h2>Connect with a growing technology talent pool.</h2></div><p>BenTechHub Talent connects technology talent with opportunities across Africa. The platform is designed around practical capability in networking, cybersecurity and cloud technologies.</p></div><div class="proof-grid"><article><b>For talent</b><h3>Make your capability visible</h3><p>Join a network built around learning, practical skills and access to meaningful technology opportunities.</p></article><article><b>For businesses</b><h3>Find people ready to contribute</h3><p>Start a conversation about the technical capability your organisation needs and the talent you want to meet.</p></article><article><b>Our focus</b><h3>Opportunity with a wider reach</h3><p>We collaborate globally to help build innovation and career opportunities from a South African base.</p></article></div><a class="btn btn-primary" href="contact.html">Talk to the talent team <span>↗</span></a></div>';
-    const footer = document.querySelector('footer');
-    if (footer) footer.before(details);
-  }
 }
 
 // Keep the navigation architecture consistent across the interior pages.
