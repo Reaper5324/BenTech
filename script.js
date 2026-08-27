@@ -240,15 +240,23 @@ if (form) {
   };
 
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
     // Validate form
     if (!validateForm()) {
+      e.preventDefault();
       status.textContent = 'Please fix the errors above before submitting.';
       status.className = 'show error';
       status.setAttribute('role', 'alert');
       return;
     }
+
+    if (form.hasAttribute('data-netlify')) {
+      status.textContent = "Thanks - sending your request securely.";
+      status.className = 'show ok';
+      status.setAttribute('role', 'status');
+      return;
+    }
+
+    e.preventDefault();
 
     // Disable submit button and show sending state
     submitBtn.disabled = true;
@@ -345,3 +353,24 @@ if (document.body.classList.contains('hub-home') && !window.matchMedia('(prefers
     heroArt.style.setProperty('--hero-x', '0px'); heroArt.style.setProperty('--hero-y', '0px');
   });
 }
+
+// Add a consistent WhatsApp action to every footer without forcing every
+// static page to duplicate the same markup.
+document.querySelectorAll('footer .footer-col').forEach((col) => {
+  const heading = col.querySelector('b');
+  if (!heading || heading.textContent.trim().toLowerCase() !== 'contact') return;
+  const list = col.querySelector('ul');
+  if (!list || list.querySelector('a[href*="wa.me/27672033731"]')) return;
+  const item = document.createElement('li');
+  item.innerHTML = '<a class="whatsapp-footer-link" href="https://wa.me/27672033731?text=Hi%20BenTechHub%2C%20I%20would%20like%20to%20speak%20to%20your%20team.">Contact us on whatsapp</a>';
+  list.appendChild(item);
+});
+
+document.querySelectorAll('footer .footer-bottom').forEach((bottom) => {
+  if (bottom.querySelector('a[href*="wa.me/27672033731"]')) return;
+  const link = document.createElement('a');
+  link.className = 'btn btn-primary whatsapp-footer-button';
+  link.href = 'https://wa.me/27672033731?text=Hi%20BenTechHub%2C%20I%20would%20like%20to%20speak%20to%20your%20team.';
+  link.textContent = 'Contact us on whatsapp';
+  bottom.appendChild(link);
+});

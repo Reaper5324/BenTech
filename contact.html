@@ -64,7 +64,9 @@
 <section class="bg-cloud">
   <div class="container">
     <div class="contact-grid">
-      <form class="reveal" id="quoteForm">
+      <form class="reveal" id="quoteForm" name="technology-assessment" method="POST" action="/contact.html?submitted=true" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="technology-assessment">
+        <p class="hidden-field"><label>Do not fill this in: <input name="bot-field"></label></p>
         <div class="field-row">
           <div class="field"><label for="name">Full name</label><input id="name" name="name" type="text" required placeholder="Your name" aria-required="true"></div>
           <div class="field"><label for="company">Company</label><input id="company" name="company" type="text" placeholder="Business name"></div>
@@ -106,6 +108,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#6FE3A0" stroke-width="1.4" style="width:36px;height:36px;margin-bottom:10px;"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
           <span style="font-size:.87rem; color:rgba(255,255,255,.7);">On-site support across Gauteng, South Africa. Remote support available nationwide.</span>
         </div>
+        <a class="btn btn-primary btn-block whatsapp-button" href="https://wa.me/27672033731?text=Hi%20BenTechHub%2C%20I%20would%20like%20help%20with%20my%20technology%20setup.">Contact us on whatsapp</a>
       </div>
     </div>
   </div>
