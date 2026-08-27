@@ -62,16 +62,13 @@ if (document.body.classList.contains('academy-page')) {
 
 }
 
-// Keep the navigation architecture consistent across the interior pages.
-const interior = document.body.classList.contains('interior-page');
-if (interior) {
-  const current = location.pathname.split('/').pop() || 'index.html';
-  const items = [['index.html','Home'],['services.html','Solutions'],['managed-It.html','Managed IT'],['pricing.html','Pricing'],['academy.html','Academy'],['talent.html','Talent'],['about.html','About'],['contact.html','Contact']];
-  const desktop = document.querySelector('nav.links');
-  if (desktop) desktop.innerHTML = items.map(([href,label]) => `<a href="${href}" class="${current === href ? 'active' : ''}">${label}</a>`).join('');
-  const mobile = document.getElementById('mobilePanel');
-  if (mobile) mobile.innerHTML = items.map(([href,label]) => `<a href="${href}">${label}</a>`).join('') + '<a href="contact.html">Contact</a><a href="contact.html" class="btn btn-primary">Request assessment</a>';
-}
+// Keep the complete navigation architecture consistent across every page.
+const current = location.pathname.split('/').pop() || 'index.html';
+const items = [['index.html','Home'],['services.html','Solutions'],['managed-It.html','Managed IT'],['pricing.html','Pricing'],['academy.html','Academy'],['talent.html','Talent'],['about.html','About'],['contact.html','Contact']];
+const desktop = document.querySelector('nav.links');
+if (desktop) desktop.innerHTML = items.map(([href,label]) => `<a href="${href}" class="${current === href ? 'active' : ''}">${label}</a>`).join('');
+const mobile = document.getElementById('mobilePanel');
+if (mobile) mobile.innerHTML = items.map(([href,label]) => `<a href="${href}">${label}</a>`).join('') + '<a href="contact.html" class="btn btn-primary">Request assessment</a>';
 
 // header shrink on scroll
 const header = document.getElementById('siteHeader');
