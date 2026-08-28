@@ -21,7 +21,7 @@ if (!document.getElementById('mobilePanel') && document.body.classList.contains(
 }
 
 // Use the supplied master mark consistently in headers, footers and browser tabs.
-const suppliedLogo = 'Logo-Cfwf3AIi.svg';
+const suppliedLogo = '33472.png';
 document.querySelectorAll('.brand').forEach((brand) => {
   const image = brand.querySelector('.hub-logo');
   if (image) image.src = suppliedLogo;
