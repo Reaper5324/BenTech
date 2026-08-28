@@ -1,5 +1,17 @@
 document.documentElement.classList.add('js');
 
+// Keep the first visual immediate while deferring images below the fold.
+const pageImages = document.querySelectorAll('img');
+const firstContentImage = Array.from(pageImages).find((image) => !image.classList.contains('hub-logo'));
+pageImages.forEach((image, index) => {
+  image.decoding = 'async';
+  if (image === firstContentImage) {
+    image.fetchPriority = 'high';
+  } else if (!image.loading) {
+    image.loading = 'lazy';
+  }
+});
+
 // Ensure the shared enhancement layer is loaded after the base stylesheet on
 // every page, including the compact one-line Academy/Talent documents.
 if (!document.querySelector('link[href="enhancements.css"]')) {
